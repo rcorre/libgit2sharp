@@ -7,6 +7,7 @@ EXTRADEFINE="$1"
 cd libgit2
 git fetch origin refs/pull/2798/merge:refs/remotes/pr/2798
 git checkout 841d3efa193305b0d175cab9c53a5201257ee78f
+cd ..
 
 rm -rf libgit2/build
 mkdir libgit2/build
