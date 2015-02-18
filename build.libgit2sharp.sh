@@ -6,7 +6,7 @@ EXTRADEFINE="$1"
 
 cd libgit2
 git fetch origin refs/pull/2798/head:refs/remotes/pr/2798
-git checkout b66d909063c76e1606b56d9256ab40c1c1a383c8
+git checkout refs/remotes/pr/2798
 cd ..
 
 rm -rf libgit2/build
