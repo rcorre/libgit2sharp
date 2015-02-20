@@ -4,6 +4,11 @@ LIBGIT2SHA=`cat ./LibGit2Sharp/libgit2_hash.txt`
 SHORTSHA=${LIBGIT2SHA:0:7}
 EXTRADEFINE="$1"
 
+cd libgit2
+git fetch origin refs/pull/2919/head:refs/remotes/pr/2919
+git checkout refs/remotes/pr/2919
+cd ..
+
 rm -rf libgit2/build
 mkdir libgit2/build
 pushd libgit2/build
