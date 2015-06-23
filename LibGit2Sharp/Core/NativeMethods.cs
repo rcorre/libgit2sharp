@@ -581,6 +581,32 @@ namespace LibGit2Sharp.Core
         [DllImport(libgit2)]
         internal static extern int git_libgit2_features();
 
+        // Bindings for git_libgit2_opts(int option, ...):
+        // Varargs can be bound using __arglist in .NET, but I had trouble getting that working with Mono.
+        // Instead of using __arglist, I enumerate the possible signatures here:
+
+        // git_libgit2_opts(GIT_OPT_GET_SEARCH_PATH, int level, git_buf *buf)
+        [DllImport(libgit2, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int git_libgit2_opts(int option, uint level, GitBuf buf);
+
+        // git_libgit2_opts(GIT_OPT_GET_SEARCH_PATH, int level, git_buf *buf)
+        [DllImport(libgit2, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int git_libgit2_opts(int option, uint level,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalCookie = UniqueId.UniqueIdentifier, MarshalTypeRef = typeof(StrictUtf8Marshaler))]string name);
+
+        // Not yet implemented libgit2_opts signatures:
+        // git_libgit2_opts(GIT_OPT_GET_MWINDOW_SIZE, size_t*)
+        // git_libgit2_opts(GIT_OPT_SET_MWINDOW_SIZE, size_t)
+        // git_libgit2_opts(GIT_OPT_GET_MWINDOW_MAPPED_LIMIT, size_t*)
+        // git_libgit2_opts(GIT_OPT_SET_MWINDOW_MAPPED_LIMIT, size_t)
+        // git_libgit2_opts(GIT_OPT_SET_CACHE_OBJECT_LIMIT, git_otype type, size_t size)
+        // git_libgit2_opts(GIT_OPT_SET_CACHE_MAX_SIZE, ssize_t max_storage_bytes)
+        // git_libgit2_opts(GIT_OPT_ENABLE_CACHING, int enabled)
+        // git_libgit2_opts(GIT_OPT_GET_CACHED_MEMORY, ssize_t* current, ssize_t* allowed)
+        // git_libgit2_opts(GIT_OPT_GET_TEMPLATE_PATH, git_buf*out)
+        // git_libgit2_opts(GIT_OPT_SET_TEMPLATE_PATH, const char* path)
+        // git_libgit2_opts(GIT_OPT_SET_SSL_CERT_LOCATIONS, const char* file, const char* path)
+
         [DllImport(libgit2)]
         internal static extern int git_graph_ahead_behind(out UIntPtr ahead, out UIntPtr behind, RepositorySafeHandle repo, ref GitOid one, ref GitOid two);
 

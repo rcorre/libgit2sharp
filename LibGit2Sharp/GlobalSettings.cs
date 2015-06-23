@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Collections.Generic;
 using LibGit2Sharp.Core;
 
 namespace LibGit2Sharp
@@ -202,6 +203,49 @@ namespace LibGit2Sharp
 
             Proxy.git_filter_unregister(registration.Name);
             registration.Free();
+        }
+
+        /// <summary>
+        /// The separator used in path list strings (like in the PATH environment variable).
+        /// A semi-colon ";" is used on Windows, and a colon ":" for all other systems.
+        /// </summary>
+        public static char PathListSeparator
+        {
+            get
+            {
+                return (Platform.OperatingSystem == OperatingSystemType.Windows) ? ';' : ':';
+            }
+        }
+
+        /// <summary>
+        /// Get the paths under which libgit2 searches for the configuration file of a given level.
+        /// </summary>
+        /// <param name="level">The level (global/system/XDG) of the config.</param>
+        /// <returns>The paths that are searched</returns>
+        public static IEnumerable<string> GetConfigSearchPaths(ConfigurationLevel level)
+        {
+            return Proxy.git_libgit2_opts_get_search_path(level).Split(PathListSeparator);
+        }
+
+        /// <summary>
+        /// Set the path under which libgit2 searches for the configuration file of a given level.
+        /// </summary>
+        /// <param name="level">The level (global/system/XDG) of the config.</param>
+        /// <param name="path">The new search path, or null to reset to default.</param>
+        public static void SetConfigSearchPath(ConfigurationLevel level, string path)
+        {
+            Proxy.git_libgit2_opts_set_search_path(level, path);
+        }
+
+        /// <summary>
+        /// Set the paths under which libgit2 searches for the configuration file of a given level.
+        /// </summary>
+        /// <param name="level">The level (global/system/XDG) of the config.</param>
+        /// <param name="paths">The new search paths, or null to reset to default.</param>
+        public static void SetConfigSearchPaths(ConfigurationLevel level, IEnumerable<string> paths)
+        {
+            var pathString = (paths == null) ? null : string.Join(PathListSeparator.ToString(), paths);
+            Proxy.git_libgit2_opts_set_search_path(level, pathString);
         }
     }
 }
