@@ -581,6 +581,10 @@ namespace LibGit2Sharp.Core
         [DllImport(libgit2)]
         internal static extern int git_libgit2_features();
 
+        // use __arglist to bind varargs in C#. The C signature is git_libgit2_opts(int option, ...)
+        [DllImport(libgit2, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int git_libgit2_opts(int option, __arglist);
+
         [DllImport(libgit2)]
         internal static extern int git_graph_ahead_behind(out UIntPtr ahead, out UIntPtr behind, RepositorySafeHandle repo, ref GitOid one, ref GitOid two);
 
