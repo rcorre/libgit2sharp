@@ -16,12 +16,27 @@ namespace LibGit2Sharp.Tests.TestHelpers
     {
         private readonly List<string> directories = new List<string>();
 
-#if LEAKS_IDENTIFYING
         public BaseFixture()
         {
+
+#if LEAKS_IDENTIFYING
             LeaksContainer.Clear();
-        }
 #endif
+            // redirect config access to a fresh directory before each test method
+            var configPath = BuildSelfCleaningDirectory().RootedDirectoryPath;
+
+            var globalPath = Path.Combine(configPath, "fake_global_config");
+            var systemPath = Path.Combine(configPath, "fake_system_config");
+            var xdgPath    = Path.Combine(configPath, "fake_xdg_config");
+
+            Touch(globalPath, ".gitconfig"); // faking ~/.gitconfig
+            Touch(systemPath, "gitconfig");  // faking $(prefix)/etc/gitconfig
+            Touch(xdgPath,    "config");     // faking $XDG_CONFIG_HOME/git/config
+
+            GlobalSettings.SetConfigSearchPath(ConfigurationLevel.Global, globalPath);
+            GlobalSettings.SetConfigSearchPath(ConfigurationLevel.System, systemPath);
+            GlobalSettings.SetConfigSearchPath(ConfigurationLevel.Xdg,    xdgPath);
+        }
 
         static BaseFixture()
         {
