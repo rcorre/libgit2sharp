@@ -700,6 +700,9 @@ namespace LibGit2Sharp.Tests
             string workdir = repo.Info.WorkingDirectory;
             Commit commit = null;
 
+            // the tests expect autocrlf=true, some will fail without line-ending conversion
+            repo.Config.Set("core.autocrlf", true);
+
             Touch(workdir, filePathA, fileContentA1);
             repo.Stage(filePathA);
             commit = repo.Commit("commit 1", Constants.Signature, Constants.Signature, new CommitOptions());
