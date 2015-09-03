@@ -784,5 +784,12 @@ namespace LibGit2Sharp
         {
             return Proxy.git_config_snapshot(configHandle);
         }
+
+        public virtual void AddBackend(ConfigBackend backend, ConfigurationLevel level, bool force)
+        {
+            Ensure.ArgumentNotNull(backend, "backend");
+
+            Proxy.git_config_add_backend(configHandle, backend.ConfigBackendPointer, level, force);
+        }
     }
 }

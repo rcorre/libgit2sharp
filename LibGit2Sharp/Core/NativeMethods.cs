@@ -438,6 +438,13 @@ namespace LibGit2Sharp.Core
         [DllImport(libgit2)]
         internal static extern int git_config_snapshot(out ConfigurationSafeHandle @out, ConfigurationSafeHandle config);
 
+        [DllImport(libgit2)]
+        internal static extern int git_config_add_backend(
+            ConfigurationSafeHandle config,
+            IntPtr backend,
+            uint level,
+            [MarshalAs(UnmanagedType.Bool)]bool force);
+
         // Ordinarily we would decorate the `url` parameter with the StrictUtf8Marshaler like we do everywhere
         // else, but apparently doing a native->managed callback with the 64-bit version of CLR 2.0 can
         // sometimes vomit when using a custom IMarshaler.  So yeah, don't do that.  If you need the url,

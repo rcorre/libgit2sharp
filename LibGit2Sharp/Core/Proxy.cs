@@ -425,6 +425,12 @@ namespace LibGit2Sharp.Core
             Ensure.ZeroResult(res);
         }
 
+        public static void git_config_add_backend(ConfigurationSafeHandle config, IntPtr backend, ConfigurationLevel level, bool force)
+        {
+            int res = NativeMethods.git_config_add_backend(config, backend, (uint)level, true);
+            Ensure.ZeroResult(res);
+        }
+
         public static bool git_config_delete(ConfigurationSafeHandle config, string name)
         {
             int res = NativeMethods.git_config_delete_entry(config, name);
